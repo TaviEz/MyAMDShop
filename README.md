@@ -1,0 +1,2 @@
+# MyAMDShop
+ AMD Shop
