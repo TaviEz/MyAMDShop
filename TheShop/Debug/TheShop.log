@@ -1,2 +1,11 @@
-﻿  main.cpp
-  TheShop.vcxproj -> C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\Debug\TheShop.exe
+﻿  Header.cpp
+C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\Header.cpp(34): error C2668: 'CPU::CPU': ambiguous call to overloaded function
+C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\Header.cpp(21,6): message : could be 'CPU::CPU(float,int,int,int,int,float,int,int,std::string)'
+C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\Header.cpp(17,6): message : or       'CPU::CPU(void)'
+C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\Header.cpp(34,1): message : while trying to match the argument list '()'
+C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\Header.cpp(37,169): error C2664: 'CPU::CPU(float,int,int,int,int,float,int,int,std::string)': cannot convert argument 3 from 'std::string' to 'int'
+C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\Header.cpp(37,186): message : No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\Header.cpp(21,6): message : see declaration of 'CPU::CPU'
+C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\Header.cpp(37,198): error C2661: 'GPU::GPU': no overloaded function takes 2 arguments
+  main.cpp
+  Generating Code...
