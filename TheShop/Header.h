@@ -14,6 +14,13 @@ protected:
 public:
 	Product();
 	Product(float weight, int height, int TDP, int nms, int memory, float frequency);
+
+	float getWeight();
+	int getHeight();
+	int getTDP();
+	int getNms();
+	int getMemory();
+	float getFrequency();
 };
 
 class CPU : virtual public Product
@@ -25,10 +32,16 @@ protected:
 
 public:
 	CPU();
-	CPU(float weight = 0, int height = 0, int TDP = 0, int nms = 0, int memory = 0, float frequency = 0, int cores = 0, int threads = 0, std::string socket = 0);
+	CPU(int cores, int threads, std::string socket, float weight = 0, int height = 0, int TDP = 0, int nms = 0, int memory = 0, float frequency = 0);
+
+	int getCores();
+	int getThreads();
+	std::string getSocket();
 };
 
-enum Technology { OpenGL, DirectX };
+enum Technology { OpenGL = 1, DirectX = 2 };
+
+const char* ToString(Technology t);
 
 class GPU : virtual public Product
 {
@@ -38,7 +51,10 @@ protected:
 
 public:
 	GPU();
-	GPU(float weight, int height, int TDP, int nms, int memory, float frequency, std::string maxRes, Technology tech);
+	GPU(std::string maxRes, Technology tech, float weight = 0.0, int height = 0, int TDP = 0, int nms = 0, int memory = 0, float frequency = 0.0);
+
+	std::string getMaxRes();
+	Technology getTech();
 };
 
 class APU: public CPU, public GPU
