@@ -4,14 +4,20 @@ Product::Product()
 {
 }
 
-Product::Product(float weight, int height, int TDP, int nms, int memory, float frequency)
+Product::Product(std::string name, float weight, int height, int TDP, int nms, int memory, float frequency)
 {
+	this->name = name;
 	this->weight = weight;
 	this->height = height;
 	this->TDP = TDP;
 	this->nms = nms;
 	this->memory = memory;
 	this->frequency = frequency;
+}
+
+std::string Product::getName()
+{
+	return name;
 }
 
 float Product::getWeight()
@@ -48,7 +54,7 @@ CPU::CPU()
 {
 }
 
-CPU::CPU(int cores, int threads, std::string socket, float weight, int height, int TDP, int nms, int memory, float frequency) : Product(weight, height, TDP, nms, memory, frequency)
+CPU::CPU(int cores, int threads, std::string socket, std::string name, float weight, int height, int TDP, int nms, int memory, float frequency) : Product(name, weight, height, TDP, nms, memory, frequency)
 {
 	this->cores = cores;
 	this->threads = threads;
@@ -74,7 +80,7 @@ GPU::GPU()
 {
 }
 
-GPU::GPU(std::string maxRes, Technology tech, float weight, int height, int TDP, int nms, int memory, float frequency): Product(weight, height, TDP, nms, memory, frequency)
+GPU::GPU(std::string maxRes, Technology tech, std::string name, float weight, int height, int TDP, int nms, int memory, float frequency): Product(name, weight, height, TDP, nms, memory, frequency)
 {
 	this->maxRes = maxRes;
 	this->tech = tech;
@@ -94,7 +100,7 @@ APU::APU()
 {
 }
 
-APU::APU(float weight, int height, int TDP, int nms, int memory, float frequency, int cores, int threads, std::string socket, std::string maxRes, Technology tech) : Product(weight, height, TDP, nms, memory, frequency), CPU(cores, threads, socket), GPU(maxRes, tech)
+APU::APU(std::string name, float weight, int height, int TDP, int nms, int memory, float frequency, int cores, int threads, std::string socket, std::string maxRes, Technology tech) : Product(name, weight, height, TDP, nms, memory, frequency), CPU(cores, threads, socket), GPU(maxRes, tech)
 {
 }
 
@@ -107,3 +113,4 @@ const char* ToString(Technology t)
 	default: return "Unknown GPU tech";
 	}
 }
+
