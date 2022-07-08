@@ -1,0 +1,2 @@
+Type of product: class Product * __ptr64
+Type of product: class Product * __ptr64

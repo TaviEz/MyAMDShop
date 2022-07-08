@@ -1,0 +1,4 @@
+﻿  main.cpp
+C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\main.cpp(17,66): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\main.cpp(21,83): warning C4305: 'argument': truncation from 'double' to 'float'
+  TheShop.vcxproj -> C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\x64\Debug\TheShop.exe

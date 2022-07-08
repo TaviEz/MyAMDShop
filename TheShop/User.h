@@ -25,5 +25,5 @@ public:
 	Admin();
 	Admin(std::string username, std::string password, Role role = admin);
 
-	void addProduct(Product& p);
+	void addProduct(Product* p);
 };

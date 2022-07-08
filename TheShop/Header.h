@@ -24,6 +24,7 @@ public:
 	int getNms();
 	int getMemory();
 	float getFrequency();
+	//virtual int getCores() = 0;
 };
 
 class CPU : virtual public Product
