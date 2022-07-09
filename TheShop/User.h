@@ -17,6 +17,8 @@ public:
 public:
 	User();
 	User(std::string username, std::string password, Role role);
+	virtual void addProduct(Product* p) = 0;
+	virtual Product* selectProduct() = 0;
 };
 
 class Admin : public User
@@ -25,5 +27,16 @@ public:
 	Admin();
 	Admin(std::string username, std::string password, Role role = admin);
 
-	void addProduct(Product* p);
+	void addProduct(Product* p) override;
+	Product* selectProduct();
+};
+
+class Client : public User
+{
+public:
+	Client();
+	Client(std::string username, std::string password, Role role = client);
+
+	Product* selectProduct() override;
+	void addProduct(Product* p) override;
 };
