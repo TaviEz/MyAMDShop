@@ -18,7 +18,7 @@ protected:
 
 public:
 	Product();
-	Product(std::string name, float weight = 0, int height = 0, int TDP = 0, int nms = 0, int memory = 0, float frequency = 0);
+	Product(std::string name, float weight = 0, int height = 0, int TDP = 0, int nms = 0, int memory = 0, float frequency = 0.0);
 
 	std::string getName();
 	void setName(std::string name);
@@ -68,7 +68,7 @@ protected:
 
 public:
 	CPU();
-	CPU(int cores, int threads, std::string socket, std::string name = "", float weight = 0, int height = 0, int TDP = 0, int nms = 0, int memory = 0, float frequency = 0);
+	CPU(int cores, int threads, std::string socket, std::string name = "", float weight = 0, int height = 0, int TDP = 0, int nms = 0, int memory = 0, float frequency = 0.0);
 
 	int getCores() override;
 	void setCores(int cores) override;

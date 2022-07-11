@@ -18,7 +18,7 @@ public:
 	User();
 	User(std::string username, std::string password, Role role);
 	virtual void addProduct(Product* p) = 0;
-	virtual Product* selectProduct() = 0;
+	virtual void selectProduct() = 0;
 };
 
 class Admin : public User
@@ -28,7 +28,7 @@ public:
 	Admin(std::string username, std::string password, Role role = admin);
 
 	void addProduct(Product* p) override;
-	Product* selectProduct();
+	void selectProduct();
 };
 
 class Client : public User
@@ -37,6 +37,11 @@ public:
 	Client();
 	Client(std::string username, std::string password, Role role = client);
 
-	Product* selectProduct() override;
+	void selectProduct() override;
 	void addProduct(Product* p) override;
 };
+
+const Technology stringToEnum(std::string str);
+
+
+

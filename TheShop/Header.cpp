@@ -62,14 +62,29 @@ int Product::getNms()
 	return nms;
 }
 
+void Product::setNms(int nms)
+{
+	this->nms = nms;
+}
+
 int Product::getMemory()
 {
 	return memory;
 }
 
+void Product::setMemory(int memory)
+{
+	this->memory = memory;
+}
+
 float Product::getFrequency()
 {
 	return frequency;
+}
+
+void Product::setFrequency(float frequency)
+{
+	this->frequency = frequency;
 }
 
 CPU::CPU()

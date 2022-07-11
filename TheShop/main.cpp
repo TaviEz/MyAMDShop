@@ -22,6 +22,6 @@ int main()
 	a1->addProduct(p3);
 
 	User* c = new Client("Client1", "parola");
-	c->addProduct(c->selectProduct());
+	c->selectProduct();
 	
 }

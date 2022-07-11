@@ -1,6 +1,2 @@
-﻿  User.cpp
-C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\User.cpp(103,6): warning C4101: 'stoi': unreferenced local variable
-C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\User.cpp(100,6): warning C4101: 'integer': unreferenced local variable
-C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\User.cpp(101,8): warning C4101: 'floating': unreferenced local variable
-C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\User.cpp(104,8): warning C4101: 'stof': unreferenced local variable
-  TheShop.vcxproj -> C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\Debug\TheShop.exe
+﻿  Header.cpp
+LINK : fatal error LNK1201: error writing to program database 'C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\Debug\TheShop.pdb'; check for insufficient disk space, invalid path, or insufficient privilege

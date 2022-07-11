@@ -1,6 +1,11 @@
 #include "User.h"
 #include <iostream>
 #include <string>
+#include <map>
+#include <boost/assign/list_of.hpp>
+#include <boost/assert.hpp>
+
+using namespace boost::assign;
 
 
 const char* ToString(Role r)
@@ -12,6 +17,16 @@ const char* ToString(Role r)
 	default: return "Unknown type of user";
 	}
 
+}
+
+const Technology stringToEnum(std::string str)
+{
+	std::map < std::string, Technology> xmap = map_list_of("OpenGL", OpenGL)("DirectX", DirectX);
+	for (const auto& tech : xmap)
+	{
+		if (tech.first == str)
+			return tech.second;
+	}
 }
 
 User::User()
@@ -77,9 +92,9 @@ void Admin::addProduct(Product* p)
 	fout.close();
 }
 
-Product* Admin::selectProduct()
+void Admin::selectProduct()
 {
-	return nullptr;
+
 }
 
 Client::Client()
@@ -90,97 +105,172 @@ Client::Client(std::string username, std::string password, Role role): User(user
 {
 }
 
-Product* Client::selectProduct()
+void Client::selectProduct()
 {
 
 	std::ifstream fin;
+	std::ofstream fout;
 	std::string line;
 	std::string aux;
-	std::string word;
-	int integer;
-	float floating;
+
 	size_t pos;
-	int stoi;
-	float stof;
+	size_t auxpos;
+	Product* choice = nullptr;
 	
-
-	Product* choice1 = new CPU(0, 0, "");
-	Product* choice2 = new GPU("0x0", OpenGL);
-	Product* choice3 = new APU();
-	int c1 = 0, c2 = 0, c3 = 0;
-
 	fin.open("listaProduse.txt");
-	getline(fin, line);
-	std::cout << line << std::endl;
+	fout.open("ShoppingCart.txt", std::ios::app);
 
-	if (line[line.length() - 3] == 'C')
-	{
-		c1 = 1;
-	}
-	else if (line[line.length() - 3] == 'G')
-	{
-		c2 = 1;
-	}
-	else
-	{
-		c3 = 1;
-	}
 
-	
 	while (fin)
 	{
 		getline(fin, line);
-		std::cout << line << std::endl;
 
+		for (int i = line.find_first_of("s") + 3; i < line.length(); i++)
+			aux += line[i];
 
-		if (line == "")
-			break;
-		else
+		if (aux == "CPU")
 		{
-			pos = line.find_first_of(':');
-			aux = line.substr(0, pos);
-			std::cout << aux << std::endl;
-			/*for (pos = 0; pos < line.length(); pos++)
+			choice = new CPU(0, 0, "");
+		}
+		else if (aux == "GPU")
+		{
+			choice = new GPU("0x0", OpenGL);
+
+		}
+		else if (aux == "APU")
+		{
+			choice = new APU();
+		}
+		
+
+		pos = line.find_first_of(':');
+		aux = line.substr(0, pos);
+		fout << aux << ": ";
+
+		if (aux == "Type of product")
+		{
+			fout << choice->getVar() << std::endl;
+		}
+
+		// adaugam campurile comune in fisier
+		if (aux == "Name")
+		{
+			choice->setName(line.substr(pos + 2));
+			fout << choice->getName() << std::endl;
+		}
+
+		if (aux == "Weight")
+		{
+			//stof= convert string to float
+			choice->setWeight(std::stof(line.substr(pos + 2, 5)));
+			fout << choice->getWeight() << std::endl;
+		}
+
+		if (aux == "Height")
+		{
+			choice->setHeight(std::stoi(line.substr(pos + 2, 3)));
+			fout << choice->getHeight() << std::endl;
+		}
+
+		if (aux == "TDP")
+		{
+			choice->setTDP(std::stoi(line.substr(pos + 2, 2)));
+			fout << choice->getTDP() << std::endl;
+		}
+
+		if (aux == "Nms")
+		{
+			choice->setNms(std::stoi(line.substr(pos + 2, 2)));
+			fout << choice->getNms() << std::endl;
+		}
+
+		if (aux == "Memory")
+		{
+			choice->setMemory(std::stoi(line.substr(pos + 2, 2)));
+			fout << choice->getMemory() << std::endl;
+		}
+
+		if (aux == "Frequency")
+		{
+			choice->setFrequency(std::stof(line.substr(pos + 2, 5)));
+			fout << choice->getFrequency() << std::endl;
+		}
+
+		// daca produsul este CPU
+		if(choice->getVar() == "class CPU")
+		{
+			if (aux == "Cores")
 			{
-				if (line[pos] == ':')
-				{
-					pos += 2;
-					break;
-				}
-				aux += line[pos];
-			}*/
-			
-			// if the choice is a CPU
-			if(c1 == 1)
+				choice->setCores(std::stof(line.substr(pos + 2, 1)));
+				fout << choice->getCores() << std::endl;
+			}
+
+			if (aux == "Threads")
 			{
-				if (aux == "Name")
-				{
-					choice1->setName(line.substr(pos + 2));
-					//std::cout << choice1->getName();
-				}
+				choice->setThreads(std::stof(line.substr(pos + 2, 2)));
+				fout << choice->getThreads() << std::endl;
+			}
 
-				if (aux == "Weight")
-				{
-					//stof= convert string to float
-					choice1->setWeight(std::stof(line.substr(pos + 2, 3)));
-				}
-
-				if (aux == "Height")
-				{
-					choice1->setHeight(std::stoi(line.substr(pos + 2, 3)));
-				}
-
-				if (aux == "TDP")
-				{
-					choice1->setTDP(std::stoi(line.substr(pos + 2, 3)));
-				}
+			if(aux == "Socket")
+			{
+				choice->setSocket(line.substr(pos + 2, 3));
+				fout << choice->getSocket() << std::endl << std::endl;
 			}
 		}
+
+		// daca produsul este GPU
+		if (choice->getVar() == "class GPU")
+		{
+			if (aux == "Maximum Resolution")
+			{
+				choice->setMaxRes(line.substr(pos + 2, 10));
+				fout << choice->getMaxRes() << std::endl;
+			}
+
+			if (aux == "Technology supported")
+			{
+				choice->setTech(stringToEnum(line.substr(pos + 2, 7)));
+				fout << ToString(choice->getTech()) << std::endl << std::endl;
+			}
+		}
+
+		if (choice->getVar() == "class APU")
+		{
+			if (aux == "Cores")
+			{
+				choice->setCores(std::stof(line.substr(pos + 2, 1)));
+				fout << choice->getCores() << std::endl;
+			}
+
+			if (aux == "Threads")
+			{
+				choice->setThreads(std::stof(line.substr(pos + 2, 2)));
+				fout << choice->getThreads() << std::endl;
+			}
+
+			if (aux == "Socket")
+			{
+				choice->setSocket(line.substr(pos + 2, 3));
+				fout << choice->getSocket() << std::endl;
+			}
+
+			if (aux == "Maximum Resolution")
+			{
+				choice->setMaxRes(line.substr(pos + 2, 10));
+				fout << choice->getMaxRes() << std::endl;
+			}
+
+			if (aux == "Technology supported")
+			{
+				choice->setTech(stringToEnum(line.substr(pos + 2, 7)));
+				fout << ToString(choice->getTech()) << std::endl << std::endl;
+			}
+		}
+		
 	}
 
-	
 	fin.close();
-	return choice1;
+	fout.close();
 }
 
 void Client::addProduct(Product* p)
