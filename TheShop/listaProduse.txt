@@ -1,37 +1,18 @@
-Type of product: class CPU
-Name: Ryzen 7
-Weight: 20 g
-Height: 100 mm
-TDP: 60 W
-Nms: 7
-Memory: 8
-Frequency: 4000 MHz
-Cores: 6
-Threads: 12
-Socket: AM4
+Type of product: class CPU Name: Ryzen 7 Weight: 20 g Height: 100 mm TDP: 60 W Nms: 7 Memory: 8 MB Frequency: 4000 MHz Cores: 6 Threads: 12 Socket: AM4 
 
-Type of product: class GPU
-Name: RX 6600
-Weight: 813.2 g
-Height: 107 mm
-TDP: 65 W
-Nms: 7
-Memory: 8
-Frequency: 2100 MHz
-Maximum Resolution: 1920x1080
-Technology supported: OpenGL
+Type of product: class GPU Name: RX 6600 Weight: 813.2 g Height: 107 mm TDP: 65 W Nms: 7 Memory: 8 GB Frequency: 2100 MHz Maximum Resolution: 1920x1080 Technology supported: OpenGL 
 
-Type of product: class APU
-Name: APU1
-Weight: 813.2 g
-Height: 107 mm
-TDP: 65 W
-Nms: 7
-Memory: 8
-Frequency: 2100 MHz
-Cores: 6
-Threads: 12
-Socket: AM4
-Maximum Resolution: 1920x1080
-Technology supported: DirectX
+Type of product: class APU Name: APU1 Weight: 813.2 g Height: 107 mm TDP: 65 W Nms: 7 Memory: 8 GB Frequency: 2100 MHz Cores: 6 Threads: 12 Socket: AM4 Maximum Resolution: 1920x1080 Technology supported: DirectX 
+
+Type of product: class CPU Name: Ryzen 7 Weight: 20 g Height: 100 mm TDP: 60 W Nms: 7 Memory: 8 MB Frequency: 4000 MHz Cores: 6 Threads: 12 Socket: AM4 
+
+Type of product: class GPU Name: RX 6600 Weight: 813.2 g Height: 107 mm TDP: 65 W Nms: 7 Memory: 8 GB Frequency: 2100 MHz Maximum Resolution: 1920x1080 Technology supported: OpenGL 
+
+Type of product: class APU Name: APU1 Weight: 813.2 g Height: 107 mm TDP: 65 W Nms: 7 Memory: 8 GB Frequency: 2100 MHz Cores: 6 Threads: 12 Socket: AM4 Maximum Resolution: 1920x1080 Technology supported: DirectX 
+
+Type of product: class CPU Name: Ryzen 7 Weight: 20 g Height: 100 mm TDP: 60 W Nms: 7 Memory: 8 MB Frequency: 4000 MHz Cores: 6 Threads: 12 Socket: AM4 
+
+Type of product: class GPU Name: RX 6600 Weight: 813.2 g Height: 107 mm TDP: 65 W Nms: 7 Memory: 8 GB Frequency: 2100 MHz Maximum Resolution: 1920x1080 Technology supported: OpenGL 
+
+Type of product: class APU Name: APU1 Weight: 813.2 g Height: 107 mm TDP: 65 W Nms: 7 Memory: 8 GB Frequency: 2100 MHz Cores: 6 Threads: 12 Socket: AM4 Maximum Resolution: 1920x1080 Technology supported: DirectX 
 

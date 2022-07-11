@@ -1,38 +1,6 @@
-Type of product: class CPU
-Name: Ryzen 7
-Weight: 20
-Height: 100
-TDP: 60
-Nms: 7
-Memory: 8
-Frequency: 4000
-Cores: 6
-Threads: 12
-Socket: AM4
+Type of product: Ryzen 7  20 100 60 7 8 4000 6 12 AM4
 
-: Type of product: class GPU
-Name: RX 6600
-Weight: 813.2
-Height: 107
-TDP: 65
-Nms: 7
-Memory: 8
-Frequency: 2100
-Maximum Resolution: 1920x1080
-Technology supported: OpenGL
+Type of product: Ryzen 7  20 100 60 7 8 4000 6 12 AM4
 
-: Type of product: class APU
-Name: APU1
-Weight: 813.2
-Height: 107
-TDP: 65
-Nms: 7
-Memory: 8
-Frequency: 2100
-Cores: 6
-Threads: 12
-Socket: AM4
-Maximum Resolution: 1920x1080
-Technology supported: DirectX
+Type of product: Ryzen 7  20 100 60 7 8 4000 6 12 AM4
 
-: : 

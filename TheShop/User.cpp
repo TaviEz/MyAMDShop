@@ -29,6 +29,51 @@ const Technology stringToEnum(std::string str)
 	}
 }
 
+void delete_line(const char* file_name, int n)
+{
+	std::ifstream fin(file_name);
+
+	std::ofstream fout;
+	std::string line;
+
+	fout.open("temp.txt", std::ofstream::out);
+
+	int line_no = 1;
+
+	while (getline(fin, line))
+	{
+		if (line_no != n)
+		{
+			fout << line << std::endl;
+		}
+		line_no++;
+	}
+
+	fout.close();
+	fin.close();
+	remove(file_name);
+	rename("temp.txt", file_name);
+}
+
+std::string iterate(std::string line, int& i, char c)
+{
+	{
+		std::string aux = "";
+
+		while (line[i] != ':')
+			i++;
+
+		i += 2;
+		while (line[i] != c)
+		{
+			aux += line[i];
+			i++;
+		}
+
+		return aux;
+	}
+}
+
 const Role stringToEnum2(std::string str)
 {
 	std::map < std::string, Role> xmap = map_list_of("admin", admin)("client", client);
@@ -73,35 +118,40 @@ void Admin::addProduct(Product* p)
 	std::ofstream fout;
 	fout.open("listaProduse.txt", std::ios::app);
 
-	fout << "Type of product: " << p->getVar() << std::endl;
-	fout << "Name: " << p->getName() << std::endl;
-	fout << "Weight: " << p->getWeight() << " g" << std::endl;
-	fout << "Height: " << p->getHeight() << " mm" << std::endl;
-	fout << "TDP: " << p->getTDP() << " W" << std::endl;
-	fout << "Nms: " << p->getNms() << std::endl;
-	fout << "Memory: " << p->getMemory() << std::endl;
-	fout << "Frequency: " << p->getFrequency() << " MHz" << std::endl;
+	fout << "Type of product: " << p->getVar() << " ";
+	fout << "Name: " << p->getName() << " ";
+	fout << "Weight: " << p->getWeight() << " g" << " ";
+	fout << "Height: " << p->getHeight() << " mm" << " ";
+	fout << "TDP: " << p->getTDP() << " W" << " ";
+	fout << "Nms: " << p->getNms() << " ";
+	fout << "Memory: " << p->getMemory() << " ";
+	if (p->getVar() == "class CPU")
+		fout << "MB" << " ";
+	else
+		fout << "GB" << " ";
+
+	fout << "Frequency: " << p->getFrequency() << " MHz" << " ";
 	
 	if (p->getVar() == "class CPU")
 	{
-		fout << "Cores: " << p->getCores() << std::endl;
-		fout << "Threads: " << p->getThreads() << std::endl;
-		fout << "Socket: " << p->getSocket() << std::endl << std::endl;
+		fout << "Cores: " << p->getCores() << " ";
+		fout << "Threads: " << p->getThreads() << " ";
+		fout << "Socket: " << p->getSocket() << " " << std::endl << std::endl;
 	}
 
 	if (p->getVar() == "class GPU")
 	{
-		fout << "Maximum Resolution: " << p->getMaxRes() << std::endl;
-		fout << "Technology supported: " << ToString(p->getTech()) << std::endl << std::endl;
+		fout << "Maximum Resolution: " << p->getMaxRes() << " ";
+		fout << "Technology supported: " << ToString(p->getTech()) << " " << std::endl << std::endl;
 	}
 
 	if (p->getVar() == "class APU")
 	{
-		fout << "Cores: " << p->getCores() << std::endl;
-		fout << "Threads: " << p->getThreads() << std::endl;
-		fout << "Socket: " << p->getSocket() << std::endl;
-		fout << "Maximum Resolution: " << p->getMaxRes() << std::endl;
-		fout << "Technology supported: " << ToString(p->getTech()) << std::endl << std::endl;
+		fout << "Cores: " << p->getCores() << " ";
+		fout << "Threads: " << p->getThreads() << " ";
+		fout << "Socket: " << p->getSocket() << " ";
+		fout << "Maximum Resolution: " << p->getMaxRes() << " ";
+		fout << "Technology supported: " << ToString(p->getTech()) << " " << std::endl << std::endl;
 
 	}
 	
@@ -129,8 +179,10 @@ void Client::selectProduct()
 	std::ofstream fout;
 	std::string line;
 	std::string aux;
+	std::string aux2;
 
-	size_t pos;
+	int start;
+	int size;
 	size_t auxpos;
 	Product* choice = nullptr;
 	
@@ -141,149 +193,82 @@ void Client::selectProduct()
 	while (fin)
 	{
 		getline(fin, line);
+		if (line == "")
+			continue;
+		size = line.find_first_of(':');
+		aux = line.substr(0, size);
+		//aux = Type of product
+		fout << aux << ": ";
+		aux2 = aux;
 
-		for (int i = line.find_first_of("s") + 3; i < line.length(); i++)
+		aux = "";
+
+		int i;
+		for (i = line.find_first_of("s") + 3; i < line.find_first_of("U") + 1; i++)
 			aux += line[i];
 
 		if (aux == "CPU")
 		{
 			choice = new CPU(0, 0, "");
+			std::cout << choice->getVar() << std::endl;
+			
 		}
 		else if (aux == "GPU")
 		{
 			choice = new GPU("0x0", OpenGL);
+			std::cout << choice->getVar() << std::endl;
 
 		}
 		else if (aux == "APU")
 		{
 			choice = new APU();
+			std::cout << choice->getVar() << std::endl;
 		}
+
+		choice->setName(iterate(line, i, 'W'));
+		fout << choice->getName() << " ";
+
+		choice->setWeight(std::stoi(iterate(line, i, 'g')));
+		fout << choice->getWeight() << " ";
+
+		choice->setHeight(std::stof(iterate(line, i, 'm')));
+		fout << choice->getHeight() << " ";
+
+		choice->setTDP(std::stoi(iterate(line, i, 'W')));
+		fout << choice->getTDP() << " ";
+
+		choice->setMemory(std::stoi(iterate(line, i, ' ')));
+		fout << choice->getMemory() << " ";
+
+		choice->setNms(std::stoi(iterate(line, i, 'M')));
+		fout << choice->getNms() << " ";
 		
+		choice->setFrequency(std::stof(iterate(line, i, 'M')));
+		fout << choice->getFrequency() << " ";
 
-		pos = line.find_first_of(':');
-		aux = line.substr(0, pos);
-		fout << aux << ": ";
-
-		if (aux == "Type of product")
+		if (aux == "CPU" || aux == "APU")
 		{
-			fout << choice->getVar() << std::endl;
+			choice->setCores(std::stoi(iterate(line, i, 'T')));
+			fout << choice->getCores() << " ";
+
+			choice->setThreads(std::stoi(iterate(line, i, 'S')));
+			fout << choice->getThreads() << " ";
+
+			choice->setSocket(iterate(line, i, ' '));
+			fout << choice->getSocket() << std::endl << std::endl;
+
 		}
 
-		// adaugam campurile comune in fisier
-		if (aux == "Name")
+		if (aux == "GPU" || aux == "APU")
 		{
-			choice->setName(line.substr(pos + 2));
-			fout << choice->getName() << std::endl;
+			choice->setMaxRes(iterate(line, i, ' '));
+			fout << choice->getSocket() << std::endl;
+
+			choice->setTech(stringToEnum(iterate(line, i, ' ')));
+			fout << choice->getMaxRes() << std::endl << std::endl;
+
 		}
-
-		if (aux == "Weight")
-		{
-			//stof= convert string to float
-			choice->setWeight(std::stof(line.substr(pos + 2, 5)));
-			fout << choice->getWeight() << std::endl;
-		}
-
-		if (aux == "Height")
-		{
-			choice->setHeight(std::stoi(line.substr(pos + 2, 3)));
-			fout << choice->getHeight() << std::endl;
-		}
-
-		if (aux == "TDP")
-		{
-			choice->setTDP(std::stoi(line.substr(pos + 2, 2)));
-			fout << choice->getTDP() << std::endl;
-		}
-
-		if (aux == "Nms")
-		{
-			choice->setNms(std::stoi(line.substr(pos + 2, 2)));
-			fout << choice->getNms() << std::endl;
-		}
-
-		if (aux == "Memory")
-		{
-			choice->setMemory(std::stoi(line.substr(pos + 2, 2)));
-			fout << choice->getMemory() << std::endl;
-		}
-
-		if (aux == "Frequency")
-		{
-			choice->setFrequency(std::stof(line.substr(pos + 2, 5)));
-			fout << choice->getFrequency() << std::endl;
-		}
-
-		// daca produsul este CPU
-		if(choice->getVar() == "class CPU")
-		{
-			if (aux == "Cores")
-			{
-				choice->setCores(std::stof(line.substr(pos + 2, 1)));
-				fout << choice->getCores() << std::endl;
-			}
-
-			if (aux == "Threads")
-			{
-				choice->setThreads(std::stof(line.substr(pos + 2, 2)));
-				fout << choice->getThreads() << std::endl;
-			}
-
-			if(aux == "Socket")
-			{
-				choice->setSocket(line.substr(pos + 2, 3));
-				fout << choice->getSocket() << std::endl << std::endl;
-			}
-		}
-
-		// daca produsul este GPU
-		if (choice->getVar() == "class GPU")
-		{
-			if (aux == "Maximum Resolution")
-			{
-				choice->setMaxRes(line.substr(pos + 2, 10));
-				fout << choice->getMaxRes() << std::endl;
-			}
-
-			if (aux == "Technology supported")
-			{
-				choice->setTech(stringToEnum(line.substr(pos + 2, 7)));
-				fout << ToString(choice->getTech()) << std::endl << std::endl;
-			}
-		}
-
-		if (choice->getVar() == "class APU")
-		{
-			if (aux == "Cores")
-			{
-				choice->setCores(std::stof(line.substr(pos + 2, 1)));
-				fout << choice->getCores() << std::endl;
-			}
-
-			if (aux == "Threads")
-			{
-				choice->setThreads(std::stof(line.substr(pos + 2, 2)));
-				fout << choice->getThreads() << std::endl;
-			}
-
-			if (aux == "Socket")
-			{
-				choice->setSocket(line.substr(pos + 2, 3));
-				fout << choice->getSocket() << std::endl;
-			}
-
-			if (aux == "Maximum Resolution")
-			{
-				choice->setMaxRes(line.substr(pos + 2, 10));
-				fout << choice->getMaxRes() << std::endl;
-			}
-
-			if (aux == "Technology supported")
-			{
-				choice->setTech(stringToEnum(line.substr(pos + 2, 7)));
-				fout << ToString(choice->getTech()) << std::endl << std::endl;
-			}
-		}
-		
+		break;
 	}
 
 	fin.close();

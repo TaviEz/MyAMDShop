@@ -43,6 +43,10 @@ public:
 
 const Technology stringToEnum(std::string str);
 
+void delete_line(const char* file_name, int n);
+
+std::string iterate(std::string line, int& i, char c);
+
 class Login
 {
 public:
