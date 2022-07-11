@@ -1,9 +1,4 @@
-﻿  User.cpp
-C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\User.cpp(128,3): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\User.cpp(204,31): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\User.cpp(210,33): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\User.cpp(241,31): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\User.cpp(247,33): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\User.cpp(117,9): warning C4101: 'auxpos': unreferenced local variable
-C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\User.cpp(30): warning C4715: 'stringToEnum': not all control paths return a value
+﻿  main.cpp
+C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\main.cpp(15,83): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\main.cpp(17,95): warning C4305: 'argument': truncation from 'double' to 'float'
   TheShop.vcxproj -> C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\x64\Debug\TheShop.exe

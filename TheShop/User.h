@@ -43,5 +43,22 @@ public:
 
 const Technology stringToEnum(std::string str);
 
+class Login
+{
+public:
+	Login();
+
+	User* isLoggedIn();
+
+	void start();
+
+};
+
+const Role stringToEnum2(std::string str);
+
+bool isEmpty(std::ifstream& pFile);
+
+
+
 
 

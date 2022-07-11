@@ -12,8 +12,8 @@ const char* ToString(Role r)
 {
 	switch (r)
 	{
-	case admin: return "Admin";
-	case client: return "Client";
+	case admin: return "admin";
+	case client: return "client";
 	default: return "Unknown type of user";
 	}
 
@@ -27,6 +27,23 @@ const Technology stringToEnum(std::string str)
 		if (tech.first == str)
 			return tech.second;
 	}
+}
+
+const Role stringToEnum2(std::string str)
+{
+	std::map < std::string, Role> xmap = map_list_of("admin", admin)("client", client);
+	for (const auto& role : xmap)
+	{
+		if (role.first == str)
+			return role.second;
+	}
+}
+
+bool isEmpty(std::ifstream& pFile)
+{
+	
+	return pFile.peek() == std::ifstream::traits_type::eof();
+	
 }
 
 User::User()
@@ -281,4 +298,116 @@ void Client::addProduct(Product* p)
 	fout << p->getName() << std::endl;
 	fout << p->getVar() << std::endl;
 	fout.close();
+}
+
+
+Login::Login()
+{
+}
+
+User* Login::isLoggedIn()
+{
+	std::string usr;
+	std::string pw;
+	std::string rol;
+	std::string username;
+	std::string password;
+	User* u = nullptr;
+
+	std::cout << "Enter username: ";
+	std::cin >> username;
+	std::cout << "Enter password: ";
+	std::cin >> password;
+
+	std::ifstream fin;
+	std::ofstream fout;
+	fout.open("users.txt", std::ios::app);
+
+	if (isEmpty(fin))
+	{
+		fout << "Tavi" << std::endl;
+		fout << "pass" << std::endl;
+		fout << "admin" << std::endl << std::endl;
+		fout.close();
+	}
+	fin.open("users.txt");
+
+	while (fin)
+	{
+		getline(fin, usr);
+		getline(fin, pw);
+
+		if (usr == username && pw == password)
+		{
+			getline(fin, rol);
+			if (rol == "client")
+			{
+				u = new Client(usr, pw);
+
+			}
+			else
+				u = new Admin(usr, pw);
+			fin.close();
+			return u;
+		}
+		
+		//rol
+		getline(fin, usr);
+		
+	   //	spatiu
+		getline(fin, usr);
+	}
+
+	fin.close();
+	return u;
+
+}
+
+
+void Login::start()
+{
+	int option;
+
+	std::cout << "1: Register\n2: Login\n3: Exit\nYour option: ";
+	std::cin >> option;
+	if (option == 1)
+	{
+		std::string user, pass;
+		std::cout << "Select your username: ";
+		std::cin >> user;
+		std::cout << "Select your password: ";
+		std::cin >> pass;
+
+		std::ofstream fout;
+		// file.open("data\\" + username + "txt")'
+		fout.open("users.txt", std::ios::app);
+		fout << user << std::endl << pass << std::endl;
+		fout << "client" << std::endl << std::endl;
+		fout.close();
+	}
+
+	else if (option == 2)
+	{
+		User* u = isLoggedIn();
+
+		if (u == nullptr)
+		{
+			std::cout << "Failed to log in :(" << std::endl;
+		}
+		else
+		{
+			std::cout << "Logged in successfully :)" << std::endl;
+
+			if (u->role == client)
+			{
+				std::cout << "client on" << std::endl;
+				//metode pt client
+			}
+			else if (u->role == admin)
+			{
+				std::cout << "admin on" << std::endl;
+				// metode pt admin
+			}
+		}
+	}
 }

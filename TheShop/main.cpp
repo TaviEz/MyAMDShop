@@ -23,5 +23,8 @@ int main()
 
 	User* c = new Client("Client1", "parola");
 	c->selectProduct();
+
+	Login l;
+	l.start();
 	
 }
