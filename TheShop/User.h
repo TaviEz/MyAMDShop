@@ -17,8 +17,7 @@ public:
 public:
 	User();
 	User(std::string username, std::string password, Role role);
-	virtual void addProduct(Product* p) = 0;
-	virtual void selectProduct() = 0;
+	virtual void addProduct() = 0;
 };
 
 class Admin : public User
@@ -27,8 +26,7 @@ public:
 	Admin();
 	Admin(std::string username, std::string password, Role role = admin);
 
-	void addProduct(Product* p) override;
-	void selectProduct();
+	void addProduct() override;
 };
 
 class Client : public User
@@ -37,15 +35,20 @@ public:
 	Client();
 	Client(std::string username, std::string password, Role role = client);
 
-	void selectProduct() override;
-	void addProduct(Product* p) override;
+	void addProduct() override;
+
 };
 
 const Technology stringToEnum(std::string str);
 
-void delete_line(const char* file_name, int n);
+void delete_line(std::string file_name, std::string line);
 
 std::string iterate(std::string line, int& i, char c);
+
+void printInventory(User* u);
+
+void removeProduct(std::string file_name);
+
 
 class Login
 {

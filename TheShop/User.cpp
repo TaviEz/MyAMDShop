@@ -4,6 +4,8 @@
 #include <map>
 #include <boost/assign/list_of.hpp>
 #include <boost/assert.hpp>
+#include <chrono>
+#include <thread>
 
 using namespace boost::assign;
 
@@ -29,31 +31,37 @@ const Technology stringToEnum(std::string str)
 	}
 }
 
-void delete_line(const char* file_name, int n)
+void delete_line(std::string file_name, std::string deleteLine)
 {
-	std::ifstream fin(file_name);
+	std::ifstream fin;
 
 	std::ofstream fout;
 	std::string line;
 
+	fin.open(file_name);
 	fout.open("temp.txt", std::ofstream::out);
-
-	int line_no = 1;
 
 	while (getline(fin, line))
 	{
-		if (line_no != n)
+		if (line != deleteLine)
 		{
 			fout << line << std::endl;
 		}
-		line_no++;
 	}
 
 	fout.close();
 	fin.close();
-	remove(file_name);
-	rename("temp.txt", file_name);
+
+	const char* p = file_name.c_str();
+	remove(p);
+	rename("temp.txt", p);
 }
+
+void delete_line(const char* file_name, int n)
+{
+	
+}
+
 
 std::string iterate(std::string line, int& i, char c)
 {
@@ -71,6 +79,80 @@ std::string iterate(std::string line, int& i, char c)
 		}
 
 		return aux;
+	}
+}
+
+void printInventory(User* u)
+{
+	bool ans;
+	std::cout << "Do you want to see the inventory? \n1 - Yes\n0- No\nYour choice: ";
+	std::cin >> ans;
+	std::cout << std::endl;
+	system("cls");
+	if (ans == true)
+	{
+		std::string line;
+		std::ifstream fin;
+
+		fin.open("listaProduse.txt");
+
+		while (fin)
+		{
+			getline(fin, line);
+			std::cout << line << std::endl;
+		}
+
+		fin.close();
+	}
+}
+
+void removeProduct(std::string file_name)
+{
+	{
+		std::ifstream fin;
+		std::string type;
+		std::string name;
+		std::string line;
+		std::string aux;
+
+
+		std::cout << "What type of product do you want to remove? (CPU/APU/GPU) ";
+		std::cin >> type;
+		std::cout << "\nThe " << type << " you want to remove is: ";
+		std::cin >> name;
+
+		fin.open(file_name);
+
+		while (fin)
+		{
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			getline(fin, line);
+			if (line == "")
+				continue;
+
+			int i;
+			for (i = line.find_first_of("s") + 3; i < line.find_first_of("U") + 1; i++)
+				aux += line[i];
+
+			if (aux == type)
+			{
+				aux = iterate(line, i, 'W');
+				aux.pop_back();
+
+				if (aux == name)
+				{
+					std::cout << "Deleting your product...";
+					std::this_thread::sleep_for(std::chrono::milliseconds(500));
+					fin.close();
+					delete_line(file_name, line);
+					break;
+				}
+			}
+			else
+				continue;
+		}
+
+		fin.close();
 	}
 }
 
@@ -113,56 +195,124 @@ Admin::Admin(std::string username, std::string password, Role role) : User(usern
 {
 }
 
-void Admin::addProduct(Product* p)
+void Admin::addProduct()
 {
 	std::ofstream fout;
+	std::string type;
+	Product* p = nullptr;
+	std::string name;
+	float weight;
+	int height;
+	int TDP;
+	int nms;
+	int memory;
+	float frequency;
+	int cores;
+	int threads;
+	std::string socket;
+	std::string maxRes;
+	std::string tech;
+
 	fout.open("listaProduse.txt", std::ios::app);
 
+	std::cout << "Type of product: (CPU, GPU, APU) ";
+	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+	getline(std::cin, type);
+
+	if (type == "CPU")
+	{
+		p = new CPU(0, 0, "");
+	}
+	else if (type == "GPU")
+	{
+		p = new GPU("0x0", OpenGL);
+	}
+	else
+		p = new APU();
 	fout << "Type of product: " << p->getVar() << " ";
+
+	std::cout << "\nName: ";
+	getline(std::cin, name);
+	p->setName(name);
 	fout << "Name: " << p->getName() << " ";
+
+	std::cout << "\nWeight: ";
+	std::cin >> weight;
+	p->setWeight(weight);
 	fout << "Weight: " << p->getWeight() << " g" << " ";
+
+	std::cout << "\nHeight: ";
+	std::cin >> height;
+	p->setHeight(height);
 	fout << "Height: " << p->getHeight() << " mm" << " ";
+
+	std::cout << "\nTDP: ";
+	std::cin >> TDP;
+	p->setTDP(TDP);
 	fout << "TDP: " << p->getTDP() << " W" << " ";
+
+	std::cout << "\nNms: ";
+	std::cin >> nms;
+	p->setNms(nms);
 	fout << "Nms: " << p->getNms() << " ";
+
+	std::cout << "\nMemory: ";
+	std::cin >> memory;
+	p->setMemory(memory);
 	fout << "Memory: " << p->getMemory() << " ";
+
 	if (p->getVar() == "class CPU")
 		fout << "MB" << " ";
 	else
 		fout << "GB" << " ";
 
+	std::cout << "\nFrequency: ";
+	std::cin >> frequency;
+	p->setFrequency(frequency);
 	fout << "Frequency: " << p->getFrequency() << " MHz" << " ";
 	
+	if (p->getVar() == "class CPU" || p->getVar() == "class APU")
+	{
+		std::cout << "\nCores: ";
+		std::cin >> cores;
+		p->setCores(cores);
+		fout << "Cores: " << p->getCores() << " ";
+		
+		std::cout << "\nThreads: ";
+		std::cin >> threads;
+		p->setThreads(threads);
+		fout << "Threads: " << p->getThreads() << " ";
+
+		std::cout << "\nSocket: ";
+		std::cin >> socket;
+		p->setSocket(socket);
+		fout << "Socket: " << p->getSocket() << " ";
+	}
+
 	if (p->getVar() == "class CPU")
 	{
-		fout << "Cores: " << p->getCores() << " ";
-		fout << "Threads: " << p->getThreads() << " ";
-		fout << "Socket: " << p->getSocket() << " " << std::endl << std::endl;
+		fout << std::endl;
+
 	}
 
-	if (p->getVar() == "class GPU")
+	if (p->getVar() == "class GPU" || p->getVar() == "class APU")
 	{
-		fout << "Maximum Resolution: " << p->getMaxRes() << " ";
+		std::cout << "\nMaximum Resolution: (LengthxWidth)";
+		std::cin >> maxRes;
+		p->setMaxRes(maxRes);
+		fout << "MaximumResolution: " << p->getMaxRes() << " ";
+
+		std::cout << "\nTechnology supported: ";
+		std::cin >> tech;
+		p->setTech(stringToEnum(tech));
 		fout << "Technology supported: " << ToString(p->getTech()) << " " << std::endl << std::endl;
 	}
-
-	if (p->getVar() == "class APU")
-	{
-		fout << "Cores: " << p->getCores() << " ";
-		fout << "Threads: " << p->getThreads() << " ";
-		fout << "Socket: " << p->getSocket() << " ";
-		fout << "Maximum Resolution: " << p->getMaxRes() << " ";
-		fout << "Technology supported: " << ToString(p->getTech()) << " " << std::endl << std::endl;
-
-	}
-	
-
 	fout.close();
 }
 
-void Admin::selectProduct()
-{
 
-}
+
 
 Client::Client()
 {
@@ -172,116 +322,121 @@ Client::Client(std::string username, std::string password, Role role): User(user
 {
 }
 
-void Client::selectProduct()
+void Client::addProduct()
 {
 
 	std::ifstream fin;
 	std::ofstream fout;
 	std::string line;
+	std::string prev = "a";
 	std::string aux;
-	std::string aux2;
+	std::string type;
+	std::string name;
 
-	int start;
 	int size;
-	size_t auxpos;
 	Product* choice = nullptr;
 	
 	fin.open("listaProduse.txt");
 	fout.open("ShoppingCart.txt", std::ios::app);
 
+	std::cout << "Choose your type of product you want to buy: (CPU/GPU/APU) ";
+	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+	getline(std::cin, type);
+
+	std::cout << "Choose your " << type << ": ";
+	getline(std::cin, name);
 
 	while (fin)
 	{
 		getline(fin, line);
 		if (line == "")
+		{
 			continue;
-		size = line.find_first_of(':');
-		aux = line.substr(0, size);
-		//aux = Type of product
-		fout << aux << ": ";
-		aux2 = aux;
-
-		aux = "";
+		}
 
 		int i;
+
+		aux = "";
 		for (i = line.find_first_of("s") + 3; i < line.find_first_of("U") + 1; i++)
 			aux += line[i];
 
 		if (aux == "CPU")
 		{
 			choice = new CPU(0, 0, "");
-			std::cout << choice->getVar() << std::endl;
-			
 		}
 		else if (aux == "GPU")
 		{
 			choice = new GPU("0x0", OpenGL);
-			std::cout << choice->getVar() << std::endl;
-
 		}
 		else if (aux == "APU")
 		{
 			choice = new APU();
-			std::cout << choice->getVar() << std::endl;
 		}
 
-		choice->setName(iterate(line, i, 'W'));
-		fout << choice->getName() << " ";
+		std::string aux2 = iterate(line, i, 'W');
+		aux2.pop_back();
+		choice->setName(aux2);
 
-		choice->setWeight(std::stoi(iterate(line, i, 'g')));
-		fout << choice->getWeight() << " ";
-
-		choice->setHeight(std::stof(iterate(line, i, 'm')));
-		fout << choice->getHeight() << " ";
-
-		choice->setTDP(std::stoi(iterate(line, i, 'W')));
-		fout << choice->getTDP() << " ";
-
-		choice->setMemory(std::stoi(iterate(line, i, ' ')));
-		fout << choice->getMemory() << " ";
-
-		choice->setNms(std::stoi(iterate(line, i, 'M')));
-		fout << choice->getNms() << " ";
-		
-		choice->setFrequency(std::stof(iterate(line, i, 'M')));
-		fout << choice->getFrequency() << " ";
-
-		if (aux == "CPU" || aux == "APU")
+		if (aux == type && choice->getName() == name)
 		{
-			choice->setCores(std::stoi(iterate(line, i, 'T')));
-			fout << choice->getCores() << " ";
+			std::cout << "Yes we have it" << std::endl;
+			fout << "Type of product: " << choice->getVar() << " ";
+			fout << "Name: " << choice->getName() << " ";
 
-			choice->setThreads(std::stoi(iterate(line, i, 'S')));
-			fout << choice->getThreads() << " ";
+			choice->setWeight(std::stoi(iterate(line, i, 'g')));
+			fout << "Weight: " << choice->getWeight() << " g ";
 
-			choice->setSocket(iterate(line, i, ' '));
-			fout << choice->getSocket() << std::endl << std::endl;
+			choice->setHeight(std::stof(iterate(line, i, 'm')));
+			fout << "Height: " << choice->getHeight() << " mm ";
 
+			choice->setTDP(std::stoi(iterate(line, i, 'W')));
+			fout << "TDP: " << choice->getTDP() << " W ";
+
+			choice->setNms(std::stoi(iterate(line, i, 'M')));
+			fout << "Nms: " << choice->getNms() << " ";
+
+			choice->setMemory(std::stoi(iterate(line, i, ' ')));
+			fout << "Memory: " << choice->getMemory();
+			if (choice->getVar() == "class CPU")
+				fout << " MB ";
+			else
+				fout << " GB ";
+
+			choice->setFrequency(std::stof(iterate(line, i, 'M')));
+			fout << "Frequency: " << choice->getFrequency() << " " << "MHZ ";
+
+			if (aux == "CPU" || aux == "APU")
+			{
+				choice->setCores(std::stoi(iterate(line, i, 'T')));
+				fout << "Cores: " << choice->getCores() << " ";
+
+				choice->setThreads(std::stoi(iterate(line, i, 'S')));
+				fout << "Threads: " << choice->getThreads() << " ";
+
+				choice->setSocket(iterate(line, i, ' '));
+				fout << "Socket: " << choice->getSocket() << " ";
+			}
+
+			if (aux == "CPU")
+			{
+				fout << std::endl;
+			}
+
+			if (aux == "GPU" || aux == "APU")
+			{
+				choice->setMaxRes(iterate(line, i, ' '));
+				fout << "MaxRes: " << choice->getMaxRes() << " ";
+
+				choice->setTech(stringToEnum(iterate(line, i, ' ')));
+				fout << "Technology supported: " << ToString(choice->getTech()) << std::endl << std::endl;
+			}
+			std::cout << "Item added to the cart" << std::endl;
+			std::this_thread::sleep_for(std::chrono::milliseconds(700));
+			break;
 		}
-
-		if (aux == "GPU" || aux == "APU")
-		{
-			choice->setMaxRes(iterate(line, i, ' '));
-			fout << choice->getSocket() << std::endl;
-
-			choice->setTech(stringToEnum(iterate(line, i, ' ')));
-			fout << choice->getMaxRes() << std::endl << std::endl;
-
-		}
-		break;
+		prev = line;
 	}
-
 	fin.close();
-	fout.close();
-}
-
-void Client::addProduct(Product* p)
-{
-	std::string line;
-	std::ofstream fout;
-	fout.open("ShoppingCart.txt", std::ios::app);
-	fout << p->getName() << std::endl;
-	fout << p->getVar() << std::endl;
 	fout.close();
 }
 
@@ -306,15 +461,7 @@ User* Login::isLoggedIn()
 
 	std::ifstream fin;
 	std::ofstream fout;
-	fout.open("users.txt", std::ios::app);
 
-	if (isEmpty(fin))
-	{
-		fout << "Tavi" << std::endl;
-		fout << "pass" << std::endl;
-		fout << "admin" << std::endl << std::endl;
-		fout.close();
-	}
 	fin.open("users.txt");
 
 	while (fin)
@@ -328,10 +475,12 @@ User* Login::isLoggedIn()
 			if (rol == "client")
 			{
 				u = new Client(usr, pw);
-
 			}
-			else
+			else if (rol == "admin")
+			{
 				u = new Admin(usr, pw);
+			}
+
 			fin.close();
 			return u;
 		}
@@ -351,48 +500,124 @@ User* Login::isLoggedIn()
 
 void Login::start()
 {
-	int option;
+	std::ifstream fin;
+	fin.open("users.txt");
 
-	std::cout << "1: Register\n2: Login\n3: Exit\nYour option: ";
-	std::cin >> option;
-	if (option == 1)
+	if (isEmpty(fin))
 	{
-		std::string user, pass;
-		std::cout << "Select your username: ";
-		std::cin >> user;
-		std::cout << "Select your password: ";
-		std::cin >> pass;
-
+		//add an admin if there are no users
 		std::ofstream fout;
-		// file.open("data\\" + username + "txt")'
 		fout.open("users.txt", std::ios::app);
-		fout << user << std::endl << pass << std::endl;
-		fout << "client" << std::endl << std::endl;
+		fout << "Tavi" << std::endl;
+		fout << "pass" << std::endl;
+		fout << "admin" << std::endl << std::endl;
 		fout.close();
 	}
 
-	else if (option == 2)
+	int option = 0;
+	while (option != 3)
 	{
-		User* u = isLoggedIn();
+		std::cout << "1: Register\n2: Login\n3: Exit\nYour option: ";
+		std::cin >> option;
 
-		if (u == nullptr)
+		if (option == 1)
 		{
-			std::cout << "Failed to log in :(" << std::endl;
+			std::string user, pass;
+			std::cout << "Select your username: ";
+			std::cin >> user;
+			std::cout << "Select your password: ";
+			std::cin >> pass;
+
+			std::ofstream fout;
+			// file.open("data\\" + username + "txt")'
+			fout.open("users.txt", std::ios::app);
+			fout << user << std::endl << pass << std::endl;
+			fout << "client" << std::endl << std::endl;
+			fout.close();
+		}
+
+		else if (option == 2)
+		{
+			User* u = isLoggedIn();
+			int choice;
+
+			if (u == nullptr)
+			{
+				std::cout << "Failed to log in :(" << std::endl;
+			}
+			else
+			{
+				std::cout << "Logged in successfully :)" << std::endl;
+				system("cls");
+				std::cout << "1) Add items" << std::endl;
+				std::cout << "2) Delete items" << std::endl;
+				std::cout << "3) Add admin" << std::endl;
+				std::cout << "Your choice: ";
+				std::cin >> choice;
+				std::cout << "\n";
+
+				if (u->role == client)
+				{
+					std::cout << "client on" << std::endl;
+					//metode pt client
+					if (choice == 1)
+					{
+						int n;
+						printInventory(u);
+						std::cout << "How many products do you want: ";
+						std::cin >> n;
+						for (int i = 0; i < n; i++)
+						{
+							u->addProduct();
+						}
+					}
+					else if (choice == 2)
+					{
+						removeProduct("ShoppingCart.txt");
+					}
+					else
+					{
+						std::cout << "Warning! Entering restricted area" << std::endl;
+					}
+				}
+				else if (u->role == admin)
+				{
+					std::cout << std::endl << "admin on" << std::endl << std::endl;
+					// metode pt admin
+					if (choice == 1)
+					{
+						int n;
+						printInventory(u);
+						std::cout << "How many products do you want: ";
+						std::cin >> n;
+						for (int i = 0; i < n; i++)
+						{
+							u->addProduct();
+						}
+					}
+					else if (choice == 2)
+					{
+						removeProduct("listaProduse.txt");
+					}
+					else
+					{
+						//add admin
+					}
+				}
+			}
+		}
+		else if (option == 3)
+		{
+
+			std::cout << "Exiting...";
+			std::this_thread::sleep_for(std::chrono::milliseconds(700));
 		}
 		else
 		{
-			std::cout << "Logged in successfully :)" << std::endl;
-
-			if (u->role == client)
-			{
-				std::cout << "client on" << std::endl;
-				//metode pt client
-			}
-			else if (u->role == admin)
-			{
-				std::cout << "admin on" << std::endl;
-				// metode pt admin
-			}
+			std::cout << "Please enter a number from 1 to 3";
+			std::this_thread::sleep_for(std::chrono::milliseconds(700));
 		}
+
+		system("cls");
 	}
 }
