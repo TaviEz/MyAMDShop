@@ -18,6 +18,7 @@ public:
 	User();
 	User(std::string username, std::string password, Role role);
 	virtual void addProduct() = 0;
+	virtual void addAdmin() = 0;
 };
 
 class Admin : public User
@@ -27,6 +28,8 @@ public:
 	Admin(std::string username, std::string password, Role role = admin);
 
 	void addProduct() override;
+	void addAdmin() override;
+	void printUsers();
 };
 
 class Client : public User
@@ -36,6 +39,7 @@ public:
 	Client(std::string username, std::string password, Role role = client);
 
 	void addProduct() override;
+	void addAdmin() override;
 
 };
 
@@ -48,6 +52,8 @@ std::string iterate(std::string line, int& i, char c);
 void printInventory(User* u);
 
 void removeProduct(std::string file_name);
+
+void replace_line(std::string file_name, std::string line, std::string str);
 
 
 class Login

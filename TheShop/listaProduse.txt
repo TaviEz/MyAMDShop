@@ -1,1 +1,4 @@
+Type of product: class CPU Name: Ryzen Weight: 5 g Height: 20 mm TDP: 3 W Nms: 40 Memory: 2 MB Frequency: 1 MHz Cores: 30 Threads: 40 Socket: 50 
+
+Type of product: class GPU Name: RX 6600 Weight: 20 g Height: 30 mm TDP: 50 W Nms: 50 Memory: 30 GB Frequency: 30 MHz MaximumResolution: 1920x1080 Technology supported: DirectX 
 
