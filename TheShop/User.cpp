@@ -152,10 +152,9 @@ void removeProduct(std::string file_name)
 	std::cout << "Product removed" << std::endl;
 }
 
-void replace_line(std::string file_name, std::string replaceLine, std::string str)
+void replace_line(const char* file_name, std::string replaceLine, std::string str)
 {
 	std::ifstream fin;
-
 	std::ofstream fout;
 	std::string line;
 
@@ -164,22 +163,27 @@ void replace_line(std::string file_name, std::string replaceLine, std::string st
 
 	while (getline(fin, line))
 	{
-		if (line != replaceLine)
+		if (line == replaceLine)
 		{
+			//name
 			fout << line << std::endl;
+			// password
+			getline(fin, line);
+			fout << line << std::endl;
+			//role
+			getline(fin, line);
+			fout << str << std::endl << std::endl;
 		}
 		else
 		{
-			fout << str << std::endl << std::endl;
+			fout << line << std::endl;
 		}
 	}
 
-	fout.close();
 	fin.close();
-
-	const char* p = file_name.c_str();
-	remove(p);
-	rename("temp.txt", p);
+	fout.close();
+	remove(file_name);
+	rename("temp.txt", file_name);
 }
 
 const Role stringToEnum2(std::string str)
@@ -362,15 +366,14 @@ void Admin::addAdmin()
 
 			//role
 			getline(fin, line);
-			fin.close();
-			fout.close();
-			replace_line("users.txt", line, "admin");
+			replace_line("users.txt", name, "admin");
+			std::cout << "Admin added " << std::endl;
+			break;
 		}
 	}
 
 	fin.close();
 	fout.close();
-	std::cout << "Admin added " << std::endl;
 
 }
 
@@ -404,14 +407,10 @@ void Admin::printUsers()
 				std::cout << name << std::endl;
 				std::cout << password << std::endl << std::endl;
 			}
-
 		}
 	}
 	fin.close();
 }
-
-
-
 
 Client::Client()
 {

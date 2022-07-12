@@ -53,7 +53,7 @@ void printInventory(User* u);
 
 void removeProduct(std::string file_name);
 
-void replace_line(std::string file_name, std::string line, std::string str);
+void replace_line(const char* file_name, std::string line, std::string str);
 
 
 class Login

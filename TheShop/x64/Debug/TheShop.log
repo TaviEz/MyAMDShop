@@ -1,9 +1,9 @@
 ﻿  User.cpp
 C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\User.cpp(130,3): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\User.cpp(459,3): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\User.cpp(485,31): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\User.cpp(488,31): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\User.cpp(435,6): warning C4101: 'size': unreferenced local variable
+C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\User.cpp(458,3): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\User.cpp(484,31): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\User.cpp(487,31): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\User.cpp(434,6): warning C4101: 'size': unreferenced local variable
 C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\User.cpp(32): warning C4715: 'stringToEnum': not all control paths return a value
-C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\User.cpp(193): warning C4715: 'stringToEnum2': not all control paths return a value
+C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\User.cpp(197): warning C4715: 'stringToEnum2': not all control paths return a value
   TheShop.vcxproj -> C:\Tavi\Developer\Repos\Proiect AMD\MyAMDShop\TheShop\x64\Debug\TheShop.exe
