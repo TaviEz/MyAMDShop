@@ -366,6 +366,8 @@ void Admin::addAdmin()
 
 			//role
 			getline(fin, line);
+			fin.close();
+			fout.close();
 			replace_line("users.txt", name, "admin");
 			std::cout << "Admin added " << std::endl;
 			break;
@@ -570,6 +572,8 @@ User* Login::isLoggedIn()
 	while (fin)
 	{
 		getline(fin, usr);
+		if (usr == "")
+			continue;
 		getline(fin, pw);
 
 		if (usr == username && pw == password)
@@ -616,6 +620,7 @@ void Login::start()
 		fout << "admin" << std::endl << std::endl;
 		fout.close();
 	}
+	fin.close();
 
 	int option = 0;
 	while (option != 3)
