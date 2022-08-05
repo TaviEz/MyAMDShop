@@ -9,7 +9,7 @@ const char* ToString(Role r);
 
 class User
 {
-public:
+private:
 	int _id;
 	std::string username;
 	std::string password;
@@ -17,6 +17,13 @@ public:
 public:
 	User();
 	User(std::string username, std::string password, Role role);
+	
+	std::string getUsername();
+	std::string getPassword();
+	
+	Role getRole();
+	void setRole(Role r);
+
 	virtual void addProduct() = 0;
 	virtual void addAdmin() = 0;
 };
@@ -40,7 +47,6 @@ public:
 
 	void addProduct() override;
 	void addAdmin() override;
-
 };
 
 const Technology stringToEnum(std::string str);
@@ -49,11 +55,13 @@ void delete_line(std::string file_name, std::string line);
 
 std::string iterate(std::string line, int& i, char c);
 
-void printInventory(User* u);
+void printFile(User* u, std::string choice);
 
 void removeProduct(std::string file_name);
 
 void replace_line(const char* file_name, std::string line, std::string str);
+
+void pressEnter();
 
 
 class Login

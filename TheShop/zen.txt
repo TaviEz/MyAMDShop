@@ -1,0 +1,4 @@
+Type of product: class CPU Name: da Weight: 3 g Height: 4 mm TDP: 2 W Nms: 4 Memory: 6 MB Frequency: 3 MHZ Cores: 3 Threads: 6 Socket: M4 
+
+Type of product: class GPU Name: 4 Weight: 4 g Height: 2 mm TDP: 6 W Nms: 8 Memory: 9 GB Frequency: 4 MHZ MaxRes: 1920x1080 Technology supported: DirectX
+

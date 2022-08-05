@@ -76,10 +76,16 @@ std::string iterate(std::string line, int& i, char c)
 	}
 }
 
-void printInventory(User* u)
+void printFile (User* u, std::string choice)
 {
 	bool ans;
-	std::cout << "Do you want to see the inventory? \n1 - Yes\n0- No\nYour choice: ";
+	int ok = 0;
+
+	if(choice == "inv")
+		std::cout << "Do you want to see the inventory? \n1 - Yes\n0 - No\nYour choice: ";
+	else if(choice == "cart")
+		std::cout << "Do you want to see the shopping cart? \n1 - Yes\n0 - No\nYour choice: ";
+
 	std::cin >> ans;
 	std::cout << std::endl;
 	system("cls");
@@ -88,31 +94,103 @@ void printInventory(User* u)
 		std::string line;
 		std::ifstream fin;
 
-		fin.open("listaProduse.txt");
+		if (choice == "inv")
+		{
+			fin.open("listaProduse.txt");
+		}
+		else if (choice == "cart")
+		{
+			fin.open(u->getUsername() + ".txt");
+		}
 
 		while (fin)
 		{
 			getline(fin, line);
-			std::cout << line << std::endl;
+			if (line != "")
+			{
+				ok = 1;
+				std::cout << line << std::endl << std::endl;
+			}
 		}
+
+		if (ok == 0)
+		{
+			if (choice == "inv")
+				std::cout << "The inventory is empty";
+			else if (choice == "cart")
+				std::cout << "Your shopping cart is empty";
+		}
+		else
+			std::cout << std::endl;
 
 		fin.close();
 	}
 }
 
+//void printClients()
+//{
+//	bool ans;
+//	std::cout << "Do you want to see the list of the clients? \n1 - Yes\n0- No\nYour choice: ";
+//	std::cin >> ans;
+//	std::cout << std::endl;
+//	system("cls");
+//
+//	if (ans == true)
+//	{
+//		std::string line;
+//		std::ifstream fin;
+//
+//		fin.open("users.txt");
+//		
+//		while (fin)
+//		{
+//			getline(fin, line);
+//
+//		}
+//	}
+//}
+
+//void printShoppingCart(Client c)
+//{
+//	bool ans;
+//	std::cout << "Do you want to see the shopping cart? \n1 - Yes\n0- No\nYour choice: ";
+//	std::cin >> ans;
+//	std::cout << std::endl;
+//	system("cls");
+//	if (ans == true)
+//	{
+//		std::string line;
+//		std::ifstream fin;
+//
+//		fin.open("listaProduse.txt");
+//
+//		while (fin)
+//		{
+//			getline(fin, line);
+//			std::cout << line << std::endl;
+//		}
+//
+//		fin.close();
+//	}
+//}
+
 void removeProduct(std::string file_name)
 {
 
 	std::ifstream fin;
-	std::string type;
+	std::string type = "";
 	std::string name;
 	std::string line;
 	std::string aux;
+	int ok = 0;
 
 
 	std::cout << "What type of product do you want to remove? (CPU/APU/GPU) ";
 	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-	getline(std::cin, type);
+	
+	while(type != "CPU" || type != "GPU" || type != "APU")
+		getline(std::cin, type);
+
 	std::cout << "\nThe " << type << " you want to remove is: ";
 	getline(std::cin, name);
 
@@ -137,19 +215,22 @@ void removeProduct(std::string file_name)
 
 			if (aux == name)
 			{
+				ok = 1;
 				std::cout << "Deleting your product...";
 				std::this_thread::sleep_for(std::chrono::milliseconds(500));
 				fin.close();
 				delete_line(file_name, line);
+				std::cout << "Product removed" << std::endl;
 				break;
 			}
 		}
 		else
 			continue;
 	}
+	if (ok == 0)
+		std::cout << "Product doesn't exist.\n";
 
 	fin.close();
-	std::cout << "Product removed" << std::endl;
 }
 
 void replace_line(const char* file_name, std::string replaceLine, std::string str)
@@ -186,6 +267,13 @@ void replace_line(const char* file_name, std::string replaceLine, std::string st
 	rename("temp.txt", file_name);
 }
 
+void pressEnter()
+{
+	std::cout << "Press Enter to Continue: ";
+	std::cin.ignore();
+	system("cls");
+}
+
 const Role stringToEnum2(std::string str)
 {
 	std::map < std::string, Role> xmap = map_list_of("admin", admin)("client", client);
@@ -216,9 +304,30 @@ User::User(std::string username, std::string password, Role role)
 	this->role = role;
 }
 
+std::string User::getUsername()
+{
+	return this->username;
+}
+
+std::string User::getPassword()
+{
+	return this->password;
+}
+
+Role User::getRole()
+{
+	return this->role;
+}
+
+void User::setRole(Role r)
+{
+	this->role = r;
+}
+
 Admin::Admin()
 {
-	role = admin;
+	//role = admin;
+	this->setRole(admin);
 }
 
 Admin::Admin(std::string username, std::string password, Role role) : User(username, password, role)
@@ -328,7 +437,7 @@ void Admin::addProduct()
 
 	if (p->getVar() == "class GPU" || p->getVar() == "class APU")
 	{
-		std::cout << "\nMaximum Resolution: (LengthxWidth)";
+		std::cout << "\nMaximum Resolution: (LengthxWidth): ";
 		std::cin >> maxRes;
 		p->setMaxRes(maxRes);
 		fout << "MaximumResolution: " << p->getMaxRes() << " ";
@@ -353,7 +462,7 @@ void Admin::addAdmin()
 	fin.open("users.txt");
 	fout.open("users.txt", std::ios::app);
 
-	std::cout << "Choose a client to be promoted: ";
+	std::cout << "\nChoose a client to be promoted: ";
 	std::cin >> name;
 
 	while (fin)
@@ -390,6 +499,7 @@ void Admin::printUsers()
 
 	std::cout << "Do you want to see the list of the clients?\n1 - Yes\n0 - No\nYour choice: ";
 	std::cin >> ans;
+	std::cout << std::endl;
 
 	fin.open("users.txt");
 
@@ -407,7 +517,6 @@ void Admin::printUsers()
 			if (role == "client")
 			{
 				std::cout << name << std::endl;
-				std::cout << password << std::endl << std::endl;
 			}
 		}
 	}
@@ -432,12 +541,13 @@ void Client::addProduct()
 	std::string aux;
 	std::string type;
 	std::string name;
+	std::string file = this->getUsername();
 
 	int size;
 	Product* choice = nullptr;
 	
 	fin.open("listaProduse.txt");
-	fout.open("ShoppingCart.txt", std::ios::app);
+	fout.open(file + ".txt", std::ios::app);
 
 	std::cout << "Choose your type of product you want to buy: (CPU/GPU/APU) ";
 	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -625,13 +735,13 @@ void Login::start()
 	int option = 0;
 	while (option != 3)
 	{
+		system("cls");
 		std::cout << "1: Register\n2: Login\n3: Exit\nYour option: ";
 		std::cin >> option;
 
 		if (option == 1)
 		{
 			std::string user, pass;
-			system("cls");
 			std::cout << "Set an user and a password for your account" << std::endl;
 			std::cout << "Select your username: ";
 			std::cin >> user;
@@ -670,28 +780,33 @@ void Login::start()
 					std::cin >> choice;
 					std::cout << "\n";
 
-					if (u->role == client)
+					if (u->getRole() == client)
 					{
-						std::cout << "client on" << std::endl;
 						//metode pt client
 						if (choice == 1)
 						{
 							int n;
-							printInventory(u);
-							std::cout << "How many products do you want: ";
+							printFile(u, "inv");
+							std::cout << "How many products do you want to add in your shopping cart: ";
 							std::cin >> n;
 							for (int i = 0; i < n; i++)
 							{
 								u->addProduct();
 							}
 							system("cls");
+							printFile(u, "cart");
+							std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+							system("cls");
 						}
 						else if (choice == 2)
 						{
-							removeProduct("ShoppingCart.txt");
+							printFile(u, "cart");
+							removeProduct(u->getUsername() + ".txt");
 							std::this_thread::sleep_for(std::chrono::milliseconds(700));
 							system("cls");
-
+							printFile(u, "cart");
+							std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+							system("cls");
 						}
 						else if (choice == 3)
 						{
@@ -700,26 +815,32 @@ void Login::start()
 							system("cls");
 						}
 					}
-					else if (u->role == admin)
+					else if (u->getRole() == admin)
 					{
-						std::cout << std::endl << "admin on" << std::endl << std::endl;
 						// metode pt admin
 						if (choice == 1)
 						{
 							int n;
-							printInventory(u);
-							std::cout << "How many products do you want: ";
+							printFile(u, "inv");
+							std::cout << "How many products do you want to add in the inventory: ";
 							std::cin >> n;
 							for (int i = 0; i < n; i++)
 							{
 								u->addProduct();
 							}
 							system("cls");
+							printFile(u, "inv");
+							std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+							system("cls");
 						}
 						else if (choice == 2)
 						{
+							printFile(u, "inv");
 							removeProduct("listaProduse.txt");
 							std::this_thread::sleep_for(std::chrono::milliseconds(700));
+							system("cls");
+							printFile(u, "inv");
+							std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 							system("cls");
 						}
 						else if (choice == 3)
