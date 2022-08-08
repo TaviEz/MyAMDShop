@@ -127,52 +127,6 @@ void printFile (User* u, std::string choice)
 	}
 }
 
-//void printClients()
-//{
-//	bool ans;
-//	std::cout << "Do you want to see the list of the clients? \n1 - Yes\n0- No\nYour choice: ";
-//	std::cin >> ans;
-//	std::cout << std::endl;
-//	system("cls");
-//
-//	if (ans == true)
-//	{
-//		std::string line;
-//		std::ifstream fin;
-//
-//		fin.open("users.txt");
-//		
-//		while (fin)
-//		{
-//			getline(fin, line);
-//
-//		}
-//	}
-//}
-
-//void printShoppingCart(Client c)
-//{
-//	bool ans;
-//	std::cout << "Do you want to see the shopping cart? \n1 - Yes\n0- No\nYour choice: ";
-//	std::cin >> ans;
-//	std::cout << std::endl;
-//	system("cls");
-//	if (ans == true)
-//	{
-//		std::string line;
-//		std::ifstream fin;
-//
-//		fin.open("listaProduse.txt");
-//
-//		while (fin)
-//		{
-//			getline(fin, line);
-//			std::cout << line << std::endl;
-//		}
-//
-//		fin.close();
-//	}
-//}
 
 void removeProduct(std::string file_name)
 {
@@ -183,13 +137,15 @@ void removeProduct(std::string file_name)
 	std::string line;
 	std::string aux;
 	int ok = 0;
-
-
-	std::cout << "What type of product do you want to remove? (CPU/APU/GPU) ";
-	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	
-	while(type != "CPU" || type != "GPU" || type != "APU")
+	while (type != "CPU" && type != "GPU" && type != "APU")
+	{
+		std::cout << "What type of product do you want to remove? (CPU/APU/GPU) ";
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 		getline(std::cin, type);
+		if (type != "CPU" && type != "GPU" && type != "APU")
+			std::cout << "Error! Please choose a product from the following list: CPU, GPU, APU\n";
+	}
 
 	std::cout << "\nThe " << type << " you want to remove is: ";
 	getline(std::cin, name);
@@ -337,7 +293,7 @@ Admin::Admin(std::string username, std::string password, Role role) : User(usern
 void Admin::addProduct()
 {
 	std::ofstream fout;
-	std::string type;
+	std::string type = "";
 	Product* p = nullptr;
 	std::string name;
 	float weight;
@@ -354,10 +310,14 @@ void Admin::addProduct()
 
 	fout.open("listaProduse.txt", std::ios::app);
 
-	std::cout << "Type of product: (CPU, GPU, APU) ";
-	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
-	getline(std::cin, type);
+	while (type != "CPU" && type != "GPU" && type != "APU")
+	{
+		std::cout << "Type of product: (CPU, GPU, APU) ";
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		getline(std::cin, type);
+		if (type != "CPU" && type != "GPU" && type != "APU")
+			std::cout << "Error! Please choose a product from the following list: CPU, GPU, APU\n";
+	}
 
 	if (type == "CPU")
 	{
@@ -367,8 +327,9 @@ void Admin::addProduct()
 	{
 		p = new GPU("0x0", OpenGL);
 	}
-	else
+	else if(type == "APU")
 		p = new APU();
+
 	fout << "Type of product: " << p->getVar() << " ";
 
 	std::cout << "\nName: ";
@@ -456,31 +417,42 @@ void Admin::addAdmin()
 	std::ofstream fout;
 	std::string line;
 	std::string name;
+	int ok = 0;
 
-	printUsers();
-
-	fin.open("users.txt");
-	fout.open("users.txt", std::ios::app);
-
-	std::cout << "\nChoose a client to be promoted: ";
-	std::cin >> name;
-
-	while (fin)
+	while (ok == 0)
 	{
-		getline(fin, line);
-		if (line == name)
+		if (printUsers()) // if there are clients in the file
 		{
-			//pass
-			getline(fin, line);
+			std::cout << "\nChoose a client to be promoted: ";
+			std::cin >> name;
 
-			//role
-			getline(fin, line);
-			fin.close();
-			fout.close();
-			replace_line("users.txt", name, "admin");
-			std::cout << "Admin added " << std::endl;
-			break;
+			fin.open("users.txt");
+			fout.open("users.txt", std::ios::app);
+			while (fin)
+			{
+				getline(fin, line);
+				if (line == name)
+				{
+					//pass
+					getline(fin, line);
+
+					//role
+					getline(fin, line);
+					fin.close();
+					fout.close();
+					replace_line("users.txt", name, "admin");
+					std::cout << "Admin added " << std::endl;
+					ok = 1;
+					break;
+				}
+			}
+
+			if (ok == 0)
+				std::cout << "The client you were looking for doesn't exist.\nTry again.\n";
 		}
+
+		else // if there are no clients in the file then exit the loop
+			ok = 1;
 	}
 
 	fin.close();
@@ -488,13 +460,13 @@ void Admin::addAdmin()
 
 }
 
-void Admin::printUsers()
+int Admin::printUsers()
 {
 	std::ifstream fin;
 	std::string name;
 	std::string password;
 	std::string role;
-
+	int ok = 0;
 	bool ans;
 
 	std::cout << "Do you want to see the list of the clients?\n1 - Yes\n0 - No\nYour choice: ";
@@ -503,24 +475,27 @@ void Admin::printUsers()
 
 	fin.open("users.txt");
 
-	if (ans == true)
+	
+	while (fin)
 	{
-		while (fin)
+		getline(fin, name);
+		if (name == "")
+			continue;
+		getline(fin, password);
+		getline(fin, role);
+
+		if (role == "client")
 		{
-			getline(fin, name);
-			if (name == "")
-				continue;
-
-			getline(fin, password);
-			getline(fin, role);
-
-			if (role == "client")
-			{
+			if(ans == true)
 				std::cout << name << std::endl;
-			}
+			ok = 1;
 		}
 	}
+	
 	fin.close();
+	if(ok == 0)
+		std::cout << "There are no clients registered at the moment.\n";
+	return ok;
 }
 
 Client::Client()

@@ -1,7 +1,9 @@
 
 Type of product: class GPU Name: 4 Weight: 4 g Height: 2 mm TDP: 6 W Nms: 8 Memory: 9 GB Frequency: 4 MHz MaximumResolution: 1920x1080 Technology supported: DirectX 
 
-Type of product: class CPU Name: Ryzen 7 Weight: 100 g Height: 200 mm TDP: 7 W Nms: 8 Memory: 8 MB Frequency: 3200 MHz Cores: 6 Threads: 12 Socket: AM4 
 
 Type of product: class APU Name: APU1 Weight: 10 g Height: 30 mm TDP: 60 W Nms: 7 Memory: 3500 GB Frequency: 4000 MHz Cores: 6 Threads: 12 Socket: AM4 MaximumResolution: 1920x1080 Technology supported: DirectX 
+
+Type of product: class CPU Name: Ryzen 5 Weight: 100 g Height: 200 mm TDP: 5 W Nms: 7 Memory: 8 MB Frequency: 3500 MHz Cores: 6 Threads: 12 Socket: AM4 
+
 

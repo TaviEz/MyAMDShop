@@ -36,7 +36,7 @@ public:
 
 	void addProduct() override;
 	void addAdmin() override;
-	void printUsers();
+	int printUsers();
 };
 
 class Client : public User
