@@ -59,6 +59,8 @@ void printFile(User* u, std::string choice);
 
 void removeProduct(std::string file_name);
 
+std::string selectType(std::string line);
+
 void replace_line(const char* file_name, std::string line, std::string str);
 
 void pressEnter();

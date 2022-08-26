@@ -57,16 +57,16 @@ void delete_line(std::string file_name, std::string deleteLine)
 	rename("temp.txt", p);
 }
 
-std::string iterate(std::string line, int& i, char c)
+std::string iterate(std::string line, int& i, char a, char b)
 {
 	{
 		std::string aux = "";
 
-		while (line[i] != ':')
+		while (line[i] != a)
 			i++;
 
 		i += 2;
-		while (line[i] != c)
+		while (line[i] != b)
 		{
 			aux += line[i];
 			i++;
@@ -164,9 +164,10 @@ void removeProduct(std::string file_name)
 		for (i = line.find_first_of("s") + 3; i < line.find_first_of("U") + 1; i++)
 			aux += line[i];
 
+
 		if (aux == type)
 		{
-			aux = iterate(line, i, 'W');
+			aux = iterate(line, i, ':', 'W');
 			aux.pop_back();
 
 			if (aux == name)
@@ -558,7 +559,7 @@ void Client::addProduct()
 			choice = new APU();
 		}
 
-		std::string aux2 = iterate(line, i, 'W');
+		std::string aux2 = iterate(line, i, ':', 'W');
 		aux2.pop_back();
 		choice->setName(aux2);
 
@@ -568,37 +569,37 @@ void Client::addProduct()
 			fout << "Type of product: " << choice->getVar() << " ";
 			fout << "Name: " << choice->getName() << " ";
 
-			choice->setWeight(std::stoi(iterate(line, i, 'g')));
+			choice->setWeight(std::stoi(iterate(line, i, ':', 'g')));
 			fout << "Weight: " << choice->getWeight() << " g ";
 
-			choice->setHeight(std::stof(iterate(line, i, 'm')));
+			choice->setHeight(std::stof(iterate(line, i, ':', 'm')));
 			fout << "Height: " << choice->getHeight() << " mm ";
 
-			choice->setTDP(std::stoi(iterate(line, i, 'W')));
+			choice->setTDP(std::stoi(iterate(line, i, ':', 'W')));
 			fout << "TDP: " << choice->getTDP() << " W ";
 
-			choice->setNms(std::stoi(iterate(line, i, 'M')));
+			choice->setNms(std::stoi(iterate(line, i, ':', 'M')));
 			fout << "Nms: " << choice->getNms() << " ";
 
-			choice->setMemory(std::stoi(iterate(line, i, ' ')));
+			choice->setMemory(std::stoi(iterate(line, i, ':', ' ')));
 			fout << "Memory: " << choice->getMemory();
 			if (choice->getVar() == "class CPU")
 				fout << " MB ";
 			else
 				fout << " GB ";
 
-			choice->setFrequency(std::stof(iterate(line, i, 'M')));
+			choice->setFrequency(std::stof(iterate(line, i, ':', 'M')));
 			fout << "Frequency: " << choice->getFrequency() << " " << "MHZ ";
 
 			if (aux == "CPU" || aux == "APU")
 			{
-				choice->setCores(std::stoi(iterate(line, i, 'T')));
+				choice->setCores(std::stoi(iterate(line, i, ':', 'T')));
 				fout << "Cores: " << choice->getCores() << " ";
 
-				choice->setThreads(std::stoi(iterate(line, i, 'S')));
+				choice->setThreads(std::stoi(iterate(line, i, ':', 'S')));
 				fout << "Threads: " << choice->getThreads() << " ";
 
-				choice->setSocket(iterate(line, i, ' '));
+				choice->setSocket(iterate(line, i, ':', ' '));
 				fout << "Socket: " << choice->getSocket() << " ";
 			}
 
@@ -609,10 +610,10 @@ void Client::addProduct()
 
 			if (aux == "GPU" || aux == "APU")
 			{
-				choice->setMaxRes(iterate(line, i, ' '));
+				choice->setMaxRes(iterate(line, i, ':', ' '));
 				fout << "MaxRes: " << choice->getMaxRes() << " ";
 
-				choice->setTech(stringToEnum(iterate(line, i, ' ')));
+				choice->setTech(stringToEnum(iterate(line, i, ':', ' ')));
 				fout << "Technology supported: " << ToString(choice->getTech()) << std::endl << std::endl;
 			}
 			std::cout << "Item added to the cart" << std::endl;

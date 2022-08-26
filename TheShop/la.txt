@@ -1,0 +1,6 @@
+
+Type of product: class APU Name: APU1 Weight: 10 g Height: 30 mm TDP: 60 W Nms: 7 Memory: 3500 GB Frequency: 4000 MHZ Cores: 6 Threads: 12 Socket: AM4 MaxRes: 1920x1080 Technology supported: DirectX
+
+Type of product: class CPU Name: Ryzen 5 Weight: 100 g Height: 200 mm TDP: 5 W Nms: 7 Memory: 8 MB Frequency: 3500 MHZ Cores: 6 Threads: 12 Socket: AM4 
+
+
