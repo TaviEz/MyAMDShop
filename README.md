@@ -17,7 +17,8 @@ The **APU** basically merges a CPU and a GPU in only one product.
 
 **How the app works?**
 First of all I created a login form where you can either register or login or to quit the app.
-POZA 1?
+
+![image1](https://user-images.githubusercontent.com/100527261/196040823-b092402a-4808-4a22-945e-aca483fa353d.png)
 
 
 In my project I opted for txt files to serve as databases. 
@@ -28,33 +29,37 @@ If there are no users I automatically added myself as an admin in order to login
 
 There are 2 types of users: clients and admins.
 Every type of user has the same starting menu after logging in.
-POZA 2
+
+![image2](https://user-images.githubusercontent.com/100527261/196040861-2ae5847f-820b-45f1-bbbf-da6aef1a1876.png)
 
 
-1) Add items
+**Adding items**
 
 In case of adding an item, the user can add it either in his shopping cart, either in the inventory of the app, depending on his role.
 The UI is simillar, it is only differentiated by the location where we want to add the item.
 
-POZE 3
+![image3](https://user-images.githubusercontent.com/100527261/196040969-f4531cba-4f95-44f9-aff9-e5b7a0fdafe0.png)
 
 After that, the user is asked how many products does he want to add and then the user must provide in the console the type of the product he wants (i.e: CPU) and the name of it (i.e. Ryzen 5).
 
-POZA 4
+![image4](https://user-images.githubusercontent.com/100527261/196040997-7f445fa8-7de6-4d46-ae8e-62afc4afcd71.png)
+
 In case of an admin he must provide all the specifications of the product.
 
-POZA 5
+![image5](https://user-images.githubusercontent.com/100527261/196041027-3dcf43a7-80fc-4f9b-b2dc-c90476f42602.png)
 
 If there is no such product it will be displayed an error in the console.
 
 
-2) Delete Items
+**Delete Items**
 The process is quite simillar. The user chooses again which product he wants to remove then then the deletion will be complete.
 Afterwards he is asked if the wants to see the inventory so he can see the product that he wanted to remove is no longer in the shopping cart or in the inventory.
 
-3) Add admin
+![image6](https://user-images.githubusercontent.com/100527261/196041097-2e132df0-b39a-4330-aa04-7e2eee937b3b.png)
+
+**Add admin**
 Is availabile only for the users that have the admin role.
 They can change the role for the clients into admins.
 
-POZA 7
+![image7](https://user-images.githubusercontent.com/100527261/196041132-5c5ec956-6d83-4a8b-b212-5b1edba1165e.png)
 
