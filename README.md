@@ -52,12 +52,14 @@ If there is no such product it will be displayed an error in the console.
 
 
 **Delete Items**
+
 The process is quite simillar. The user chooses again which product he wants to remove then then the deletion will be complete.
 Afterwards he is asked if the wants to see the inventory so he can see the product that he wanted to remove is no longer in the shopping cart or in the inventory.
 
 ![image6](https://user-images.githubusercontent.com/100527261/196041097-2e132df0-b39a-4330-aa04-7e2eee937b3b.png)
 
 **Add admin**
+
 Is availabile only for the users that have the admin role.
 They can change the role for the clients into admins.
 
